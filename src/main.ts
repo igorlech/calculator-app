@@ -1,3 +1,5 @@
+import "./reset.scss";
+import "./variables.scss";
 import "./main.scss";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
