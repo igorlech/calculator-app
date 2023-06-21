@@ -2,6 +2,18 @@ import "./reset.scss";
 import "./variables.scss";
 import "./main.scss";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <h1>Hello Vite + TypeScript + Deno!</h1>
-`;
+const numberBtns = document.querySelectorAll<HTMLButtonElement>(".number");
+const numberBtnsArray = Array.from(numberBtns);
+
+console.log(numberBtnsArray);
+
+function Calculator() {
+  numberBtnsArray.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      console.log(+btn.value);
+      console.log(typeof +btn.value);
+    });
+  });
+}
+
+Calculator();
