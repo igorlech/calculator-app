@@ -9,7 +9,30 @@ const equalsBtn = document.querySelector<HTMLButtonElement>("#equals");
 console.log(numberBtnsArray);
 console.log(multiplyBtn, divideBtn, subtractBtn, addBtn, equalsBtn);
 
-function Calculator() {
+function add(a: number, b: number): number {
+  console.log(a + b);
+  return a + b;
+}
+
+function subtract(a: number, b: number): number {
+  console.log(a - b);
+  return a - b;
+}
+
+function multiply(a: number, b: number): number {
+  console.log(a * b);
+  return a * b;
+}
+
+function divide(a: number, b: number): number {
+  if (b === 0) {
+    throw new Error("Cannot divide by zero");
+  }
+  console.log(a / b);
+  return a / b;
+}
+
+export default function Calculator() {
   numberBtnsArray.forEach((btn) => {
     btn.addEventListener("click", () => {
       console.log(+btn.value);
@@ -19,25 +42,25 @@ function Calculator() {
 
   addBtn?.addEventListener("click", () => {
     console.log("add");
+    add(1, 2);
   });
 
   subtractBtn?.addEventListener("click", () => {
     console.log("subtract");
+    subtract(1, 2);
   });
 
   multiplyBtn?.addEventListener("click", () => {
     console.log("multiply");
+    multiply(1, 2);
   });
 
   divideBtn?.addEventListener("click", () => {
     console.log("divide");
+    divide(1, 2);
   });
 
   equalsBtn?.addEventListener("click", () => {
     console.log("equals");
   });
 }
-
-Calculator();
-
-export default Calculator;
