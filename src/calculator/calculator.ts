@@ -1,13 +1,20 @@
+// Variables setup
+
 const numberBtns = document.querySelectorAll<HTMLButtonElement>(".number");
 const numberBtnsArray = Array.from(numberBtns);
+
 const multiplyBtn = document.querySelector<HTMLButtonElement>("#multiply");
 const divideBtn = document.querySelector<HTMLButtonElement>("#divide");
 const subtractBtn = document.querySelector<HTMLButtonElement>("#subtract");
 const addBtn = document.querySelector<HTMLButtonElement>("#add");
+
 const equalsBtn = document.querySelector<HTMLButtonElement>("#equals");
 
-console.log(numberBtnsArray);
-console.log(multiplyBtn, divideBtn, subtractBtn, addBtn, equalsBtn);
+const clearBtn = document.querySelector<HTMLButtonElement>("#clear");
+
+const currentNumber = document.querySelector<HTMLDivElement>("#current-number");
+
+// Logic functions
 
 function add(a: number, b: number): number {
   console.log(a + b);
@@ -31,6 +38,8 @@ function divide(a: number, b: number): number {
   console.log(a / b);
   return a / b;
 }
+
+// Main Calculator function
 
 export default function Calculator() {
   numberBtnsArray.forEach((btn) => {
