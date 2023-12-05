@@ -84,7 +84,12 @@ function arithmetic() {
   addBtn?.addEventListener("click", () => {
     console.log("add");
     addMathSign("+");
-    previousNumber = currentNumber;
+    currentNumber?.replaceChildren(document.createTextNode("0"));
+    let currentArray: Array<Node> = [];
+    currentNumber?.childNodes.forEach((child) => {
+      currentArray.push(child);
+    });
+    previousNumber?.appendChild(currentArray[0]);
   });
 
   subtractBtn?.addEventListener("click", () => {
