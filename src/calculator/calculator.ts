@@ -12,9 +12,8 @@ const equalsBtn = document.querySelector<HTMLButtonElement>("#equals");
 
 const clearBtn = document.querySelector<HTMLButtonElement>("#clear");
 
-const currentNumber = document.querySelector<HTMLDivElement>(".current-number");
-const previousNumber =
-  document.querySelector<HTMLDivElement>(".previous-number");
+let currentNumber = document.querySelector<HTMLDivElement>(".current-number");
+let previousNumber = document.querySelector<HTMLDivElement>(".previous-number");
 const mathSign = document.querySelector<HTMLDivElement>(".math-sign");
 
 // Logic functions
@@ -68,13 +67,14 @@ function addMathSign(operator: string) {
 function getNumber() {
   numberBtnsArray.forEach((btn) => {
     btn.addEventListener("click", () => {
-      console.log(+btn.value);
-      console.log(typeof +btn.value);
+      const btnValue = btn.value.toString();
+      console.log(+btnValue);
+      console.log(typeof +btnValue);
       if (currentNumber?.firstChild?.nodeValue === "0") {
         currentNumber.removeChild(currentNumber.firstChild!);
-        currentNumber.appendChild(document.createTextNode(btn.value));
+        currentNumber.appendChild(document.createTextNode(btnValue));
       } else {
-        currentNumber?.appendChild(document.createTextNode(btn.value));
+        currentNumber?.appendChild(document.createTextNode(btnValue));
       }
     });
   });
@@ -83,26 +83,43 @@ function getNumber() {
 function arithmetic() {
   addBtn?.addEventListener("click", () => {
     console.log("add");
-    add(1, 2);
+    addMathSign("+");
+    previousNumber = currentNumber;
   });
 
   subtractBtn?.addEventListener("click", () => {
     console.log("subtract");
-    subtract(1, 2);
+    addMathSign("-");
   });
 
   multiplyBtn?.addEventListener("click", () => {
     console.log("multiply");
-    multiply(1, 2);
+    addMathSign("*");
   });
 
   divideBtn?.addEventListener("click", () => {
     console.log("divide");
-    divide(1, 2);
+    addMathSign("/");
   });
 
   equalsBtn?.addEventListener("click", () => {
-    console.log("equals");
+    try {
+      const current = parseFloat(currentNumber?.innerText || "0");
+      const previous = parseFloat(previousNumber?.innerText || "0");
+      const operator = mathSign?.innerText || "+";
+
+      const result = operate(previous, current, operator);
+
+      // Display the result
+      currentNumber?.replaceChildren(
+        document.createTextNode(result.toString())
+      );
+      previousNumber?.replaceChildren(document.createTextNode(""));
+      mathSign?.replaceChildren(document.createTextNode(""));
+    } catch (error) {
+      console.error(error);
+      // console.error("Error during calculation:", error.message);
+    }
   });
 }
 
