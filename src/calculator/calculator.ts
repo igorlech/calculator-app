@@ -68,13 +68,11 @@ function getNumber() {
   numberBtnsArray.forEach((btn) => {
     btn.addEventListener("click", () => {
       const btnValue = btn.value.toString();
-      console.log(+btnValue);
-      console.log(typeof +btnValue);
-      if (currentNumber?.firstChild?.nodeValue === "0") {
-        currentNumber.removeChild(currentNumber.firstChild!);
-        currentNumber.appendChild(document.createTextNode(btnValue));
-      } else {
-        currentNumber?.appendChild(document.createTextNode(btnValue));
+      if (currentNumber) {
+        currentNumber.textContent =
+          currentNumber.textContent === "0"
+            ? btnValue
+            : currentNumber.textContent + btnValue;
       }
     });
   });
@@ -89,6 +87,9 @@ function arithmetic() {
     currentNumber?.childNodes.forEach((child) => {
       currentArray.push(child);
     });
+    console.log(currentArray);
+    console.log(currentArray[0]);
+
     previousNumber?.appendChild(currentArray[0]);
   });
 
@@ -129,8 +130,16 @@ function arithmetic() {
 }
 
 function clear() {
+  let isCleared = true;
+
   clearBtn?.addEventListener("click", () => {
+    if (isCleared) {
+      // The calculator is already cleared, do nothing
+      return;
+    }
+
     console.log("clear");
+
     if (mathSign?.firstChild) {
       mathSign.removeChild(mathSign.firstChild!);
     }
@@ -140,6 +149,38 @@ function clear() {
     }
 
     currentNumber?.replaceChildren(document.createTextNode("0"));
+
+    // Set the flag to indicate that the calculator is now cleared
+    isCleared = true;
+  });
+
+  // Additional logic to reset the isCleared flag
+  addBtn?.addEventListener("click", () => {
+    // Reset the flag when an arithmetic operation is performed
+    isCleared = false;
+  });
+
+  subtractBtn?.addEventListener("click", () => {
+    isCleared = false;
+  });
+
+  multiplyBtn?.addEventListener("click", () => {
+    isCleared = false;
+  });
+
+  divideBtn?.addEventListener("click", () => {
+    isCleared = false;
+  });
+
+  equalsBtn?.addEventListener("click", () => {
+    isCleared = false;
+  });
+
+  numberBtnsArray.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // Reset the flag when a number is clicked
+      isCleared = false;
+    });
   });
 }
 
