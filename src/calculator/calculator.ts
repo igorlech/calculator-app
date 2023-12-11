@@ -131,6 +131,7 @@ export class Calculator {
     });
   }
 
+  // TODO: Fix clear function, not working well for clearing more input than 1
   private clear() {
     let isCleared = true;
 
