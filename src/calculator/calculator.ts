@@ -1,193 +1,183 @@
 // Variables setup
 
-const numberBtns = document.querySelectorAll<HTMLButtonElement>(".number");
-const numberBtnsArray = Array.from(numberBtns);
+export class Calculator {
+  private numberBtns = document.querySelectorAll<HTMLButtonElement>(".number");
+  private numberBtnsArray = Array.from(this.numberBtns);
 
-const multiplyBtn = document.querySelector<HTMLButtonElement>("#multiply");
-const divideBtn = document.querySelector<HTMLButtonElement>("#divide");
-const subtractBtn = document.querySelector<HTMLButtonElement>("#subtract");
-const addBtn = document.querySelector<HTMLButtonElement>("#add");
+  private multiplyBtn = document.querySelector<HTMLButtonElement>("#multiply");
+  private divideBtn = document.querySelector<HTMLButtonElement>("#divide");
+  private subtractBtn = document.querySelector<HTMLButtonElement>("#subtract");
+  private addBtn = document.querySelector<HTMLButtonElement>("#add");
 
-const equalsBtn = document.querySelector<HTMLButtonElement>("#equals");
+  private equalsBtn = document.querySelector<HTMLButtonElement>("#equals");
 
-const clearBtn = document.querySelector<HTMLButtonElement>("#clear");
+  private clearBtn = document.querySelector<HTMLButtonElement>("#clear");
 
-let currentNumber = document.querySelector<HTMLDivElement>(".current-number");
-let previousNumber = document.querySelector<HTMLDivElement>(".previous-number");
-const mathSign = document.querySelector<HTMLDivElement>(".math-sign");
+  private currentNumber =
+    document.querySelector<HTMLDivElement>(".current-number");
+  private previousNumber =
+    document.querySelector<HTMLDivElement>(".previous-number");
+  private mathSign = document.querySelector<HTMLDivElement>(".math-sign");
 
-// Logic functions
-
-function add(a: number, b: number): number {
-  console.log(a + b);
-  return a + b;
-}
-
-function subtract(a: number, b: number): number {
-  console.log(a - b);
-  return a - b;
-}
-
-function multiply(a: number, b: number): number {
-  console.log(a * b);
-  return a * b;
-}
-
-function divide(a: number, b: number): number {
-  if (b === 0) {
-    throw new Error("Cannot divide by zero");
+  constructor() {
+    this.getNumber();
+    this.arithmetic();
+    this.clear();
   }
-  console.log(a / b);
-  return a / b;
-}
 
-// Operator function
-
-function operate(a: number, b: number, operator: string): number {
-  switch (operator) {
-    case "+":
-      return add(a, b);
-    case "-":
-      return subtract(a, b);
-    case "*":
-      return multiply(a, b);
-    case "/":
-      return divide(a, b);
-    default:
-      throw new Error("Invalid operator");
+  private add(a: number, b: number): number {
+    console.log(a + b);
+    return a + b;
   }
-}
 
-// Action functions
+  private subtract(a: number, b: number): number {
+    console.log(a - b);
+    return a - b;
+  }
 
-function addMathSign(operator: string) {
-  mathSign?.appendChild(document.createTextNode(operator));
-}
+  private multiply(a: number, b: number): number {
+    console.log(a * b);
+    return a * b;
+  }
 
-function getNumber() {
-  numberBtnsArray.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const btnValue = btn.value.toString();
-      if (currentNumber) {
-        currentNumber.textContent =
-          currentNumber.textContent === "0"
-            ? btnValue
-            : currentNumber.textContent + btnValue;
+  private divide(a: number, b: number): number {
+    if (b === 0) {
+      throw new Error("Cannot divide by zero");
+    }
+    console.log(a / b);
+    return a / b;
+  }
+
+  private operate(a: number, b: number, operator: string): number {
+    switch (operator) {
+      case "+":
+        return this.add(a, b);
+      case "-":
+        return this.subtract(a, b);
+      case "*":
+        return this.multiply(a, b);
+      case "/":
+        return this.divide(a, b);
+      default:
+        throw new Error("Invalid operator");
+    }
+  }
+
+  private addMathSign(operator: string) {
+    this.mathSign?.appendChild(document.createTextNode(operator));
+  }
+
+  private getNumber() {
+    this.numberBtnsArray.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const btnValue = btn.value.toString();
+        if (this.currentNumber) {
+          this.currentNumber.textContent =
+            this.currentNumber.textContent === "0"
+              ? btnValue
+              : this.currentNumber.textContent + btnValue;
+        }
+      });
+    });
+  }
+
+  private arithmetic() {
+    this.addBtn?.addEventListener("click", () => {
+      console.log("add");
+      this.addMathSign("+");
+      this.currentNumber?.replaceChildren(document.createTextNode("0"));
+      let currentArray: Array<Node> = [];
+      this.currentNumber?.childNodes.forEach((child) => {
+        currentArray.push(child);
+      });
+      console.log(currentArray);
+      console.log(currentArray[0]);
+
+      this.previousNumber?.appendChild(currentArray[0]);
+    });
+
+    this.subtractBtn?.addEventListener("click", () => {
+      console.log("subtract");
+      this.addMathSign("-");
+    });
+
+    this.multiplyBtn?.addEventListener("click", () => {
+      console.log("multiply");
+      this.addMathSign("*");
+    });
+
+    this.divideBtn?.addEventListener("click", () => {
+      console.log("divide");
+      this.addMathSign("/");
+    });
+
+    this.equalsBtn?.addEventListener("click", () => {
+      try {
+        const current = parseFloat(this.currentNumber?.innerText || "0");
+        const previous = parseFloat(this.previousNumber?.innerText || "0");
+        const operator = this.mathSign?.innerText || "+";
+
+        const result = this.operate(previous, current, operator);
+
+        this.currentNumber?.replaceChildren(
+          document.createTextNode(result.toString())
+        );
+        this.previousNumber?.replaceChildren(document.createTextNode(""));
+        this.mathSign?.replaceChildren(document.createTextNode(""));
+      } catch (error) {
+        console.error(error);
+        // console.error("Error during calculation:", error.message);
       }
     });
-  });
-}
+  }
 
-function arithmetic() {
-  addBtn?.addEventListener("click", () => {
-    console.log("add");
-    addMathSign("+");
-    currentNumber?.replaceChildren(document.createTextNode("0"));
-    let currentArray: Array<Node> = [];
-    currentNumber?.childNodes.forEach((child) => {
-      currentArray.push(child);
+  private clear() {
+    let isCleared = true;
+
+    this.clearBtn?.addEventListener("click", () => {
+      if (isCleared) {
+        return;
+      }
+
+      console.log("clear");
+
+      if (this.mathSign?.firstChild) {
+        this.mathSign.removeChild(this.mathSign.firstChild!);
+      }
+
+      if (this.previousNumber?.firstChild) {
+        this.previousNumber.removeChild(this.previousNumber.firstChild!);
+      }
+
+      this.currentNumber?.replaceChildren(document.createTextNode("0"));
+
+      isCleared = true;
     });
-    console.log(currentArray);
-    console.log(currentArray[0]);
 
-    previousNumber?.appendChild(currentArray[0]);
-  });
-
-  subtractBtn?.addEventListener("click", () => {
-    console.log("subtract");
-    addMathSign("-");
-  });
-
-  multiplyBtn?.addEventListener("click", () => {
-    console.log("multiply");
-    addMathSign("*");
-  });
-
-  divideBtn?.addEventListener("click", () => {
-    console.log("divide");
-    addMathSign("/");
-  });
-
-  equalsBtn?.addEventListener("click", () => {
-    try {
-      const current = parseFloat(currentNumber?.innerText || "0");
-      const previous = parseFloat(previousNumber?.innerText || "0");
-      const operator = mathSign?.innerText || "+";
-
-      const result = operate(previous, current, operator);
-
-      // Display the result
-      currentNumber?.replaceChildren(
-        document.createTextNode(result.toString())
-      );
-      previousNumber?.replaceChildren(document.createTextNode(""));
-      mathSign?.replaceChildren(document.createTextNode(""));
-    } catch (error) {
-      console.error(error);
-      // console.error("Error during calculation:", error.message);
-    }
-  });
-}
-
-function clear() {
-  let isCleared = true;
-
-  clearBtn?.addEventListener("click", () => {
-    if (isCleared) {
-      // The calculator is already cleared, do nothing
-      return;
-    }
-
-    console.log("clear");
-
-    if (mathSign?.firstChild) {
-      mathSign.removeChild(mathSign.firstChild!);
-    }
-
-    if (previousNumber?.firstChild) {
-      previousNumber.removeChild(previousNumber.firstChild!);
-    }
-
-    currentNumber?.replaceChildren(document.createTextNode("0"));
-
-    // Set the flag to indicate that the calculator is now cleared
-    isCleared = true;
-  });
-
-  // Additional logic to reset the isCleared flag
-  addBtn?.addEventListener("click", () => {
-    // Reset the flag when an arithmetic operation is performed
-    isCleared = false;
-  });
-
-  subtractBtn?.addEventListener("click", () => {
-    isCleared = false;
-  });
-
-  multiplyBtn?.addEventListener("click", () => {
-    isCleared = false;
-  });
-
-  divideBtn?.addEventListener("click", () => {
-    isCleared = false;
-  });
-
-  equalsBtn?.addEventListener("click", () => {
-    isCleared = false;
-  });
-
-  numberBtnsArray.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      // Reset the flag when a number is clicked
+    this.addBtn?.addEventListener("click", () => {
       isCleared = false;
     });
-  });
-}
 
-// Main Calculator function
+    this.subtractBtn?.addEventListener("click", () => {
+      isCleared = false;
+    });
 
-export default function Calculator() {
-  getNumber();
-  arithmetic();
-  clear();
+    this.multiplyBtn?.addEventListener("click", () => {
+      isCleared = false;
+    });
+
+    this.divideBtn?.addEventListener("click", () => {
+      isCleared = false;
+    });
+
+    this.equalsBtn?.addEventListener("click", () => {
+      isCleared = false;
+    });
+
+    this.numberBtnsArray.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        isCleared = false;
+      });
+    });
+  }
 }
