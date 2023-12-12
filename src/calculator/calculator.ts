@@ -1,4 +1,4 @@
-// Variables setup
+import { mathSigns } from "./mathSigns";
 
 export class Calculator {
   private numberBtns = document.querySelectorAll<HTMLButtonElement>(".number");
@@ -65,6 +65,9 @@ export class Calculator {
 
   private addMathSign(operator: string) {
     this.mathSign?.appendChild(document.createTextNode(operator));
+    if (this.mathSign?.hasChildNodes()) {
+      this.mathSign?.replaceChildren(document.createTextNode(operator));
+    }
   }
 
   private getNumber() {
@@ -84,7 +87,7 @@ export class Calculator {
   private arithmetic() {
     this.addBtn?.addEventListener("click", () => {
       console.log("add");
-      this.addMathSign("+");
+      this.addMathSign(mathSigns.add);
       this.currentNumber?.replaceChildren(document.createTextNode("0"));
       let currentArray: Array<Node> = [];
       this.currentNumber?.childNodes.forEach((child) => {
@@ -97,18 +100,15 @@ export class Calculator {
     });
 
     this.subtractBtn?.addEventListener("click", () => {
-      console.log("subtract");
-      this.addMathSign("-");
+      this.addMathSign(mathSigns.subtract);
     });
 
     this.multiplyBtn?.addEventListener("click", () => {
-      console.log("multiply");
-      this.addMathSign("*");
+      this.addMathSign(mathSigns.multiply);
     });
 
     this.divideBtn?.addEventListener("click", () => {
-      console.log("divide");
-      this.addMathSign("/");
+      this.addMathSign(mathSigns.divide);
     });
 
     this.equalsBtn?.addEventListener("click", () => {
@@ -132,8 +132,9 @@ export class Calculator {
   }
 
   // TODO: Fix clear function, not working well for clearing more input than 1
+  // Update: I think it's now fixed but can be done in a better way
   private clear() {
-    let isCleared = true;
+    let isCleared = false;
 
     this.clearBtn?.addEventListener("click", () => {
       if (isCleared) {
@@ -142,12 +143,12 @@ export class Calculator {
 
       console.log("clear");
 
-      if (this.mathSign?.firstChild) {
-        this.mathSign.removeChild(this.mathSign.firstChild!);
+      if (this.mathSign) {
+        this.mathSign.innerHTML = "";
       }
 
-      if (this.previousNumber?.firstChild) {
-        this.previousNumber.removeChild(this.previousNumber.firstChild!);
+      if (this.previousNumber) {
+        this.previousNumber.innerHTML = "";
       }
 
       this.currentNumber?.replaceChildren(document.createTextNode("0"));
