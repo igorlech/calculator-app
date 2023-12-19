@@ -90,12 +90,18 @@ export class Calculator {
       this.addMathSign(mathSigns.add);
 
       let currentNumberValue = this.currentNumber?.innerText || "0";
+      let previousNumberValue = this.previousNumber?.innerText || "0";
 
       this.previousNumber?.replaceChildren(
         document.createTextNode(currentNumberValue)
       );
 
       this.currentNumber?.replaceChildren(document.createTextNode("0"));
+
+      let numberCurrent = parseFloat(currentNumberValue);
+      let numberPrevious = parseFloat(previousNumberValue);
+
+      this.add(numberCurrent, numberPrevious);
     });
 
     this.subtractBtn?.addEventListener("click", () => {
