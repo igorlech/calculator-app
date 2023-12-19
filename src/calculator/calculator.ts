@@ -14,7 +14,7 @@ export class Calculator {
   private clearBtn = document.querySelector<HTMLButtonElement>("#clear");
 
   private currentNumber =
-    document.querySelector<HTMLDivElement>(".current-number");
+    document.querySelector<HTMLParagraphElement>(".current-number");
   private previousNumber =
     document.querySelector<HTMLDivElement>(".previous-number");
   private mathSign = document.querySelector<HTMLDivElement>(".math-sign");
@@ -88,15 +88,14 @@ export class Calculator {
     this.addBtn?.addEventListener("click", () => {
       console.log("add");
       this.addMathSign(mathSigns.add);
-      this.currentNumber?.replaceChildren(document.createTextNode("0"));
-      let currentArray: Array<Node> = [];
-      this.currentNumber?.childNodes.forEach((child) => {
-        currentArray.push(child);
-      });
-      console.log(currentArray);
-      console.log(currentArray[0]);
 
-      this.previousNumber?.appendChild(currentArray[0]);
+      let currentNumberValue = this.currentNumber?.innerText || "0";
+
+      this.previousNumber?.replaceChildren(
+        document.createTextNode(currentNumberValue)
+      );
+
+      this.currentNumber?.replaceChildren(document.createTextNode("0"));
     });
 
     this.subtractBtn?.addEventListener("click", () => {
@@ -122,6 +121,7 @@ export class Calculator {
         this.currentNumber?.replaceChildren(
           document.createTextNode(result.toString())
         );
+
         this.previousNumber?.replaceChildren(document.createTextNode(""));
         this.mathSign?.replaceChildren(document.createTextNode(""));
       } catch (error) {
@@ -132,7 +132,7 @@ export class Calculator {
   }
 
   // TODO: Fix clear function, not working well for clearing more input than 1
-  // Update: I think it's now fixed but can be done in a better way
+  // UPDATE: I think it's now fixed but can be done in a better way
   private clear() {
     let isCleared = false;
 
