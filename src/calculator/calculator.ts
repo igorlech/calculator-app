@@ -105,15 +105,60 @@ export class Calculator {
     });
 
     this.subtractBtn?.addEventListener("click", () => {
+      console.log("subtract");
       this.addMathSign(mathSigns.subtract);
+
+      let currentNumberValue = this.currentNumber?.innerText || "0";
+      let previousNumberValue = this.previousNumber?.innerText || "0";
+
+      this.previousNumber?.replaceChildren(
+        document.createTextNode(currentNumberValue)
+      );
+
+      this.currentNumber?.replaceChildren(document.createTextNode("0"));
+
+      let numberCurrent = parseFloat(currentNumberValue);
+      let numberPrevious = parseFloat(previousNumberValue);
+
+      this.subtract(numberCurrent, numberPrevious);
     });
 
     this.multiplyBtn?.addEventListener("click", () => {
+      console.log("multiply");
       this.addMathSign(mathSigns.multiply);
+
+      let currentNumberValue = this.currentNumber?.innerText || "0";
+      let previousNumberValue = this.previousNumber?.innerText || "0";
+
+      this.previousNumber?.replaceChildren(
+        document.createTextNode(currentNumberValue)
+      );
+
+      this.currentNumber?.replaceChildren(document.createTextNode("0"));
+
+      let numberCurrent = parseFloat(currentNumberValue);
+      let numberPrevious = parseFloat(previousNumberValue);
+
+      this.multiply(numberCurrent, numberPrevious);
     });
 
     this.divideBtn?.addEventListener("click", () => {
+      console.log("divide");
       this.addMathSign(mathSigns.divide);
+
+      let currentNumberValue = this.currentNumber?.innerText || "0";
+      let previousNumberValue = this.previousNumber?.innerText || "0";
+
+      this.previousNumber?.replaceChildren(
+        document.createTextNode(currentNumberValue)
+      );
+
+      this.currentNumber?.replaceChildren(document.createTextNode("0"));
+
+      let numberCurrent = parseFloat(currentNumberValue);
+      let numberPrevious = parseFloat(previousNumberValue);
+
+      this.divide(numberCurrent, numberPrevious);
     });
 
     this.equalsBtn?.addEventListener("click", () => {
